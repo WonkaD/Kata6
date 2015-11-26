@@ -8,14 +8,18 @@ public class Main {
 
     public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
         String nameFile = "emails.txt";
-        ArrayList<Person> mailArray = MailListReader.read(nameFile);
+        ArrayList<Person1> mailArray = PersonLoader.read();
+        HistogramBuilder<Person1> builder = new HistogramBuilder<>(mailArray);
         
-        HistogramBuilder<Person> builder = new HistogramBuilder<>(mailArray);
-        Histogram<String> domains = builder.build((Person item) -> item.getMail().substring(item.getMail().indexOf("@")));
-        Histogram<Character> letters = builder.build((Person item) -> item.getMail().charAt(0));
+        Histogram<Float> peso = builder.build((Person1 item) -> item.getPeso());
+        Histogram<String> dominios = builder.build((Person1 item) -> item.getMail().split("@")[1]);
+        Histogram<Character> genero = builder.build((Person1 item) -> item.getGenero().charAt(0));
         
-        new HistogramDisplay(letters, "Letras").execute();
-        new HistogramDisplay(domains, "Dominios").execute();
+        new HistogramDisplay(peso, "peso").execute();
+        new HistogramDisplay(dominios, "Dominios").execute();
+        new HistogramDisplay(genero, "Generos").execute();
+        
+        
         
     }
 
